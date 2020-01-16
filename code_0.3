@@ -1,0 +1,112 @@
+//this code is for all 4 boxes to run simultaneously
+const int seqOn = 2; //output 1 (device C) ethovision input will start loop
+const int piezo1 = 3; //audio output 1
+const int piezo2 = 4;
+const int piezo3 = 5;
+const int piezo4 = 6;
+const int shock1 = 7; //shockbox 1 output
+const int shock2 = 8;
+const int shock3 = 9;
+const int shock4 = 10;
+
+int input1 = 0;
+int check1 = 0;
+const int toneDuration = 30000; //tone 30 sec
+const int traceDuration = 2000; //trace 2 sec
+const int shockDuration = 1000; //shock 1 sec
+//const int itiDuration = 90000; turned off because this is included in the ethovision code
+
+void setup() {
+  // setup code here, to run once:
+
+  pinMode(seqOn, INPUT);
+  pinMode(piezo1, OUTPUT);
+  pinMode(piezo2, OUTPUT);
+  pinMode(piezo3, OUTPUT);
+  pinMode(piezo4, OUTPUT);
+  pinMode(shock1, OUTPUT);
+  pinMode(shock2, OUTPUT);
+  pinMode(shock3, OUTPUT);
+  pinMode(shock4, OUTPUT);
+  digitalWrite(seqOn, LOW); //set input1 off unless incoming ethovision signal
+  digitalWrite(piezo1, LOW); 
+  digitalWrite(shock1, LOW); 
+  digitalWrite(piezo2, LOW); 
+  digitalWrite(shock2, LOW); 
+  digitalWrite(piezo3, LOW); 
+  digitalWrite(shock3, LOW); 
+  digitalWrite(piezo4, LOW); 
+  digitalWrite(shock4, LOW); 
+
+  Serial.begin(9600);           // set up Serial library at 9600 bps
+
+}
+
+void loop() {
+  // main code here, to run repeatedly:
+  input1 = digitalRead(seqOn);
+
+  //box1
+  if (input1 == HIGH) {
+    check1 = check1 + 1;
+    if (check1 == 1) {
+      tone(piezo1, 1000); // Send 1KHz sound signal 
+      delay(toneDuration);
+      noTone(piezo1); // Stop sound...
+      digitalWrite(shock1, LOW); //trace period start
+      delay(traceDuration);
+      digitalWrite(shock1, HIGH); //shock start
+      delay(shockDuration);
+      digitalWrite(piezo1, LOW); // tone off
+      digitalWrite(shock1, LOW); // shock off
+    }
+  }
+  //box2
+  if (input1 == HIGH) {
+    check1 = check1 + 1;
+    if (check1 == 1) {
+      tone(piezo2, 1000); // Send 1KHz sound signal 
+      delay(toneDuration);
+      noTone(piezo2); // Stop sound...
+      digitalWrite(shock2, LOW); //trace period start
+      delay(traceDuration);
+      digitalWrite(shock2, HIGH); //shock start
+      delay(shockDuration);
+      digitalWrite(piezo2, LOW); // tone off
+      digitalWrite(shock2, LOW); // shock off
+    }
+  }
+  //box3
+  if (input1 == HIGH) {
+    check1 = check1 + 1;
+    if (check1 == 1) {
+      tone(piezo3, 1000); // Send 1KHz sound signal 
+      delay(toneDuration);
+      noTone(piezo3); // Stop sound...
+      digitalWrite(shock3, LOW); //trace period start
+      delay(traceDuration);
+      digitalWrite(shock3, HIGH); //shock start
+      delay(shockDuration);
+      digitalWrite(piezo3, LOW); // tone off
+      digitalWrite(shock3, LOW); // shock off
+    }
+  }
+  //box4
+  if (input1 == HIGH) {
+    check1 = check1 + 1;
+    if (check1 == 1) {
+      tone(piezo4, 1000); // Send 1KHz sound signal 
+      delay(toneDuration);
+      noTone(piezo4); // Stop sound...
+      digitalWrite(shock4, LOW); //trace period start
+      delay(traceDuration);
+      digitalWrite(shock4, HIGH); //shock start
+      delay(shockDuration);
+      digitalWrite(piezo4, LOW); // tone off
+      digitalWrite(shock4, LOW); // shock off
+    }
+  }
+  else if (input1 == LOW) {
+    check1 = 0;
+  }
+}
