@@ -1,0 +1,58 @@
+//this code is for low versus high tones- TWO pairings will result from one ethovision signal
+const int seqOn = 2; //output 1 (device C) ethovision input will start loop
+const int piezo = 5; //audio output
+const int shock = 7;//shockbox output
+
+int input1 = 0;
+int check1 = 0;
+const int toneDuration = 30000;
+const int traceDuration = 2000;
+const int shockDuration = 1000;
+const int itiDuration = 90000; 
+
+void setup() {
+  // setup code here, to run once:
+
+  pinMode(seqOn, INPUT);
+  pinMode(piezo, OUTPUT);
+  pinMode(shock, OUTPUT);
+  digitalWrite(seqOn, LOW); //set input1 off unless incoming ethovision signal
+  digitalWrite(piezo, LOW); //set input1 off unless incoming ethovision signal
+  digitalWrite(shock, LOW); //set input1 off unless incoming ethovision signal
+
+  Serial.begin(9600);           // set up Serial library at 9600 bps
+
+}
+
+void loop() {
+  // main code here, to run repeatedly:
+  input1 = digitalRead(seqOn);
+
+  if (input1 == HIGH) {
+    check1 = check1 + 1;
+    if (check1 == 1) {
+      tone(piezo, 1000); // Send 1kHz sound signal 
+      delay(toneDuration);
+      noTone(piezo); // Stop sound...
+      digitalWrite(shock, LOW); //trace period start
+      delay(traceDuration);
+      digitalWrite(shock, HIGH); //shock start
+      delay(shockDuration);
+      digitalWrite(piezo, LOW); // tone off
+      digitalWrite(shock, LOW); // shock off
+      delay(itiDuration); //ITI between low pitch tone sequence and high pitch- addition to 0.1
+      tone(piezo, 20000); //send 20kHz sound
+      delay(toneDuration);
+      noTone(piezo);
+      digitalWrite(shock, LOW);
+      delay(traceDuration);
+      digitalWrite(shock, HIGH);
+      delay(shockDuration);
+      digitalWrite(piezo, LOW);
+      digitalWrite(shock, LOW);
+    }
+  }
+  else if (input1 == LOW) {
+    check1 = 0;
+  }
+}
