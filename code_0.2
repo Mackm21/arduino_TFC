@@ -44,10 +44,10 @@ void loop() {
       tone(piezo, 20000); //send 20kHz sound
       delay(toneDuration);
       noTone(piezo);
-      digitalWrite(shock, LOW);
-      delay(traceDuration);
-      digitalWrite(shock, HIGH);
-      delay(shockDuration);
+      //digitalWrite(shock, LOW);
+      //delay(traceDuration);
+      //digitalWrite(shock, HIGH); shock removed because high pitch not associated w shock
+      //delay(shockDuration);
       digitalWrite(piezo, LOW);
       digitalWrite(shock, LOW);
     }
