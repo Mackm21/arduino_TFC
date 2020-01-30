@@ -1,0 +1,60 @@
+
+const int seqOn = 2; //output 1 (device C) ethovision input will start loop
+const int piezo = 4; //audio output
+const int shock = 7;//shockbox output
+
+int input1 = 0;
+int check1 = 0;
+const int toneDuration = 30000;
+const int traceDuration = 2000;
+const int shockDuration = 1000;
+const int itiDuration = 90000; 
+const int itiDuration2 = 16000;
+
+void setup() {
+  // setup code here, to run once:
+
+  pinMode(seqOn, INPUT);
+  pinMode(piezo, OUTPUT);
+  pinMode(shock, OUTPUT);
+  digitalWrite(seqOn, LOW); //set input1 off unless incoming ethovision signal
+  digitalWrite(piezo, LOW); //set input1 off unless incoming ethovision signal
+  digitalWrite(shock, LOW); //set input1 off unless incoming ethovision signal
+
+  Serial.begin(9600);           // set up Serial library at 9600 bps
+
+}
+
+void loop() {
+  // main code here, to run repeatedly:
+  input1 = digitalRead(seqOn);
+
+  if (input1 == HIGH) {
+    check1 = check1 + 1;
+    if (check1 == 1) {
+      tone(piezo, 1000); // Send 1KHz sound signal 
+      delay(toneDuration);
+      noTone(piezo); // Stop sound...
+      delay(traceDuration);
+      digitalWrite(shock, HIGH); //shock start
+      delay(shockDuration);
+      digitalWrite(piezo, LOW); // tone off
+      digitalWrite(shock, LOW); // shock off
+      delay(itiDuration);
+      noTone(piezo); // Stop sound...
+      delay(itiDuration);
+      noTone(piezo); // Stop sound...
+      delay(itiDuration);
+      noTone(piezo);
+      delay(itiDuration2);
+      tone(piezo, 2000); // Send 2KHz sound signal 
+      delay(toneDuration);
+      noTone(piezo); // Stop sound...
+      digitalWrite(piezo, LOW); // tone off
+      digitalWrite(shock, LOW); // shock off
+    }
+  }
+  else if (input1 == LOW) {
+    check1 = 0;
+  }
+}
